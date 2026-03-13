@@ -353,9 +353,13 @@ export default function Home() {
 
 useEffect(() => {
   registerNotifications();
-  getWeather();
   getLocationWeather();
 }, []);
+
+useEffect(() => {
+  getWeather();
+}, [selectedState]);
+
   // ---------------- Weather Fetch ----------------
   const getWeather = async () => {
   try {
