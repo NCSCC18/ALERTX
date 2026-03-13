@@ -258,20 +258,25 @@ export default function Home() {
 
   // ---------------- Alert Sound ----------------
   const playAlert = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/alert.mp3")
-    );
-    setSound(sound);
-    await sound.playAsync();
-  };
+  try {
 
-  const stopAlert = async () => {
-    if(sound){
-      await sound.stopAsync();
-      await sound.unloadAsync();
-      setSound(null);
-    }
-  };
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      playsInSilentModeIOS: true,
+      staysActiveInBackground: false
+    });
+
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/alert.mp3"),
+      { shouldPlay: true }
+    );
+
+    setSound(sound);
+
+  } catch (error) {
+    console.log("Sound error:", error);
+  }
+};
 
   // ---------------- Notification ----------------
   const registerNotifications = async () => {
