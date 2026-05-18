@@ -277,6 +277,17 @@ export default function Home() {
     console.log("Sound error:", error);
   }
 };
+const stopAlert = async () => {
+  try {
+    if (sound) {
+      await sound.stopAsync();
+      await sound.unloadAsync();
+      setSound(null);
+    }
+  } catch (error) {
+    console.log("Stop sound error:", error);
+  }
+};
 
   // ---------------- Notification ----------------
   const registerNotifications = async () => {
@@ -364,6 +375,13 @@ useEffect(() => {
 useEffect(() => {
   getWeather();
 }, [selectedState]);
+useEffect(() => {
+  return sound
+    ? () => {
+        sound.unloadAsync();
+      }
+    : undefined;
+}, [sound]);
 
   // ---------------- Weather Fetch ----------------
   const getWeather = async () => {
